@@ -19,7 +19,7 @@ router.post("/register", async (req, res) => {
     await user.save();
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
-    res.status(201).json({ token, user: { name, email } });
+    res.status(201).json({ token, user: { _id: user._id, name, email } });
 
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
@@ -56,7 +56,7 @@ router.post("/login", async (req, res) => {
     // Step 4: Send token back to frontend
     res.json({
       token,
-      user: { name: user.name, email: user.email }
+      user: { _id: user._id, name: user.name, email: user.email }  
     });
 
   } catch (err) {
@@ -77,7 +77,7 @@ router.post("/google-register", async (req, res) => {
     }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
-    res.json({ token, user: { name, email } });
+    res.json({ token, user: { _id: user._id, name, email } });
 
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
